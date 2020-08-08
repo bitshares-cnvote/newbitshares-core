@@ -1145,22 +1145,22 @@ namespace detail {
 
    const vote_recalc_options vote_recalc_options::witness()
    {
-      static const vote_recalc_options o( 360*86400*10, 8, 45*86400*10 );
+      static const vote_recalc_options o( 360*86400, 8, 45*86400 );
       return o;
    }
    const vote_recalc_options vote_recalc_options::committee()
    {
-      static const vote_recalc_options o( 360*86400*10, 8, 45*86400*10 );
+      static const vote_recalc_options o( 360*86400, 8, 45*86400 );
       return o;
    }
    const vote_recalc_options vote_recalc_options::worker()
    {
-      static const vote_recalc_options o( 360*86400*10, 8, 45*86400*10 );
+      static const vote_recalc_options o( 360*86400, 8, 45*86400 );
       return o;
    }
    const vote_recalc_options vote_recalc_options::delegator()
    {
-      static const vote_recalc_options o( 360*86400*10, 8, 45*86400*10 );
+      static const vote_recalc_options o( 360*86400, 8, 45*86400 );
       return o;
    }
 }
