@@ -12,6 +12,8 @@ moc_*
 genesis.json
 hardfork.hpp
 
+build/
+
 libraries/utilities/git_revision.cpp
 
 libraries/wallet/Doxyfile

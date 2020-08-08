@@ -24,7 +24,13 @@
 
 #include <graphene/chain/ticket_object.hpp>
 
+#include <graphene/chain/database.hpp>
+#include <graphene/chain/exceptions.hpp>
+#include <graphene/chain/hardfork.hpp>
+
 #include <fc/io/raw.hpp>
+#include <iostream>
+#include <ctime>
 
 using namespace graphene::chain;
 
@@ -60,6 +66,9 @@ void ticket_object::init_split( time_point_sec now, const ticket_object& old_tic
 
 void ticket_object::update_target_type( time_point_sec now, ticket_type new_target_type )
 {
+   //const database& _db = db();
+   //const auto block_time = _db.head_block_time();
+
    if( current_type < new_target_type )
    {
       if( status != charging )
@@ -79,7 +88,11 @@ void ticket_object::update_target_type( time_point_sec now, ticket_type new_targ
          else // was stable or charging, to downgrade
          {
             current_type = static_cast<ticket_type>( static_cast<uint8_t>(current_type) - 1 );
-            next_type_downgrade_time = now + seconds_to_downgrade(current_type);
+            if( HARDFORK_CORE_2103F_PASSED(now) )
+               next_type_downgrade_time = now + seconds_to_downgrade(current_type) * 10;
+            else
+               next_type_downgrade_time = now + seconds_to_downgrade(current_type);
+
          }
       }
       // else a downgrade was started ago, keep the old value of `next_type_downgrade_time`
@@ -100,6 +113,10 @@ void ticket_object::adjust_amount( const asset& delta_amount )
 
 void ticket_object::auto_update()
 {
+   //const database& _db = db();
+   //const auto block_time = _db.head_block_time();
+   time_point_sec now = time_point_sec( time_point::now() ) ;  
+
    if( status == charging )
    {
       current_type = static_cast<ticket_type>( static_cast<uint8_t>(current_type) + 1 );
@@ -119,7 +136,14 @@ void ticket_object::auto_update()
          {
             status = withdrawing;
             next_auto_update_time += seconds_per_lock_forever_update_step;
-            value = amount.amount * value_multiplier(current_type);
+            if( HARDFORK_CORE_2103F_PASSED(now) )
+            {
+               value = amount.amount * 1;
+            }
+            else
+            {
+               value = amount.amount * value_multiplier(current_type);
+            }
          }
       }
    }
@@ -128,7 +152,16 @@ void ticket_object::auto_update()
       // Note: current_type != liquid, guaranteed by the caller
       if( current_type == lock_forever )
       {
-         share_type delta_value = amount.amount * value_multiplier(current_type) / lock_forever_update_steps;
+         share_type delta_value = 0;
+         if( HARDFORK_CORE_2103F_PASSED(now) )
+         {
+            delta_value = amount.amount * 1 / lock_forever_update_steps;
+         }
+         else
+         {         
+            delta_value = amount.amount * value_multiplier(current_type) / lock_forever_update_steps;
+         }
+         
          if( delta_value <= 0 )
             delta_value = 1;
          if( value <= delta_value )
@@ -152,7 +185,14 @@ void ticket_object::auto_update()
       else // to downgrade
       {
          current_type = static_cast<ticket_type>( static_cast<uint8_t>(current_type) - 1 );
-         next_type_downgrade_time += seconds_to_downgrade(current_type);
+         if( HARDFORK_CORE_2103F_PASSED(now) )
+         {
+            next_type_downgrade_time = next_type_downgrade_time + ( seconds_to_downgrade(current_type) * 10 );
+         }
+         else
+         {
+            next_type_downgrade_time += seconds_to_downgrade(current_type);
+         }
          next_auto_update_time = next_type_downgrade_time;
       }
    }
@@ -162,9 +202,16 @@ void ticket_object::auto_update()
 
 void ticket_object::update_value()
 {
+   //const database& _db = db();
+   //const auto block_time = _db.head_block_time();
+   time_point_sec now = time_point_sec( time_point::now() ) ;
+
    if( current_type != lock_forever )
    {
-      value = amount.amount * value_multiplier(current_type);
+      if( HARDFORK_CORE_2103F_PASSED(now) )
+         value = amount.amount * 1;
+      else
+         value = amount.amount * value_multiplier(current_type);
    }
    // else lock forever and to be updated, do nothing here
 }
