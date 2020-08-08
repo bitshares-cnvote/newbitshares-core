@@ -1130,6 +1130,10 @@ namespace detail {
       uint64_t get_recalced_voting_stake( const uint64_t stake, const time_point_sec last_vote_time,
                                          const vote_recalc_times& recalc_times ) const
       {
+         time_point_sec now = time_point_sec( time_point::now() ) ;
+         if( HARDFORK_CORE_2103F_PASSED(now) )
+            return stake;
+
          if( last_vote_time > recalc_times.full_power_time )
             return stake;
          if( last_vote_time <= recalc_times.zero_power_time )
@@ -1145,22 +1149,42 @@ namespace detail {
 
    const vote_recalc_options vote_recalc_options::witness()
    {
+      time_point_sec now = time_point_sec( time_point::now() ) ;
       static const vote_recalc_options o( 360*86400, 8, 45*86400 );
+      static const vote_recalc_options o10( 360*86400*10, 8, 45*86400*10 );
+      if( HARDFORK_CORE_2103F_PASSED(now) )
+         return o10;
+      
       return o;
    }
    const vote_recalc_options vote_recalc_options::committee()
    {
+      time_point_sec now = time_point_sec( time_point::now() ) ;
       static const vote_recalc_options o( 360*86400, 8, 45*86400 );
+      static const vote_recalc_options o10( 360*86400*10, 8, 45*86400*10 );
+      if( HARDFORK_CORE_2103F_PASSED(now) )
+         return o10;
+
       return o;
    }
    const vote_recalc_options vote_recalc_options::worker()
    {
+      time_point_sec now = time_point_sec( time_point::now() ) ;
       static const vote_recalc_options o( 360*86400, 8, 45*86400 );
+      static const vote_recalc_options o10( 360*86400*10, 8, 45*86400*10 );
+      if( HARDFORK_CORE_2103F_PASSED(now) )
+         return o10;
+         
       return o;
    }
    const vote_recalc_options vote_recalc_options::delegator()
    {
+      time_point_sec now = time_point_sec( time_point::now() ) ;
       static const vote_recalc_options o( 360*86400, 8, 45*86400 );
+      static const vote_recalc_options o10( 360*86400*10, 8, 45*86400*10 );
+      if( HARDFORK_CORE_2103F_PASSED(now) )
+         return o10;
+         
       return o;
    }
 }
@@ -1180,6 +1204,7 @@ void database::perform_chain_maintenance(const signed_block& next_block, const g
       const time_point_sec now;
       const bool hf2103_passed;
       const bool pob_activated;
+      const bool hf2103f_passed;
 
       optional<detail::vote_recalc_times> witness_recalc_times;
       optional<detail::vote_recalc_times> committee_recalc_times;
@@ -1189,14 +1214,15 @@ void database::perform_chain_maintenance(const signed_block& next_block, const g
       vote_tally_helper( database& db )
          : d(db), props( d.get_global_properties() ), dprops( d.get_dynamic_global_properties() ),
            now( d.head_block_time() ), hf2103_passed( HARDFORK_CORE_2103_PASSED( now ) ),
-           pob_activated( dprops.total_pob > 0 || dprops.total_inactive > 0 )
+           pob_activated( dprops.total_pob > 0 || dprops.total_inactive > 0 ),
+           hf2103f_passed( HARDFORK_CORE_2103F_PASSED( now ) )
       {
          d._vote_tally_buffer.resize( props.next_available_vote_id, 0 );
          d._witness_count_histogram_buffer.resize( props.parameters.maximum_witness_count / 2 + 1, 0 );
          d._committee_count_histogram_buffer.resize( props.parameters.maximum_committee_count / 2 + 1, 0 );
          d._total_voting_stake[0] = 0;
          d._total_voting_stake[1] = 0;
-         if( hf2103_passed )
+         if( hf2103_passed)
          {
             witness_recalc_times   = detail::vote_recalc_options::witness().get_vote_recalc_times( now );
             committee_recalc_times = detail::vote_recalc_options::committee().get_vote_recalc_times( now );
@@ -1296,7 +1322,8 @@ void database::perform_chain_maintenance(const signed_block& next_block, const g
                voting_stake[0] = detail::vote_recalc_options::committee().get_recalced_voting_stake(
                                     voting_stake[2], opinion_account_stats.last_vote_time, *committee_recalc_times );
                num_committee_voting_stake = voting_stake[0];
-               if( opinion_account.num_committee_voted > 1 )
+               // 2103 not pass
+               if( opinion_account.num_committee_voted > 1 && !hf2103f_passed )
                   voting_stake[0] /= opinion_account.num_committee_voted;
                voting_stake[2] = detail::vote_recalc_options::worker().get_recalced_voting_stake(
                                     voting_stake[2], opinion_account_stats.last_vote_time, *worker_recalc_times );
