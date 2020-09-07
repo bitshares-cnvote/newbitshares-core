@@ -30,7 +30,7 @@ Build instructions and additional documentation are available in the
 
 ### Build
 
-We recommend building on Ubuntu 16.04 LTS (64-bit) 
+We recommend building on Ubuntu 18.04 LTS (64-bit) 
 
 **Build Dependencies:**
 
@@ -39,7 +39,7 @@ We recommend building on Ubuntu 16.04 LTS (64-bit)
 
 **Build Script:**
 
-    git clone https://github.com/bitshares-cnvote/bitshares-core.git
+    git clone https://github.com/bitshares-cnvote/newbitshares-core.git
     cd bitshares-core
     git checkout master # may substitute "master" with current release tag
     git submodule update --init --recursive
@@ -50,7 +50,7 @@ We recommend building on Ubuntu 16.04 LTS (64-bit)
 
 **Upgrade Script:** (prepend to the Build Script above if you built a prior release):
 
-    git remote set-url origin https://github.com/bitshares-cnvote/bitshares-core.git
+    git remote set-url origin https://github.com/bitshares-cnvote/newbitshares-core.git
     git checkout master
     git remote set-head origin --auto
     git pull
@@ -179,7 +179,7 @@ You can run the program with `--help` parameter to see more info:
 
     ./programs/cli_wallet/cli_wallet --help
 
-There is also some info in the [Wiki](https://github.com/bitshares-cnvote/bitshares-core/wiki/CLI-Wallet-Cookbook).
+There is also some info in the [Wiki](https://github.com/bitshares/bitshares-core/wiki/CLI-Wallet-Cookbook).
 
 
 Support
@@ -187,9 +187,9 @@ Support
 
 Technical support is available in the [BitSharesTalk technical support subforum](https://bitsharestalk.org/index.php?board=45.0).
 
-BitShares Core bugs can be reported directly to the [issue tracker](https://github.com/bitshares-cnovte/bitshares-core/issues).
+BitShares Core bugs can be reported directly to the [issue tracker](https://github.com/bitshares-cnovte/newbitshares-core/issues).
 
-BitShares UI bugs should be reported to the [UI issue tracker](https://github.com/bitshares-cnvote/bitshares-ui/issues).
+BitShares UI bugs should be reported to the [UI issue tracker](https://github.com/bitshares/bitshares-ui/issues).
 
 Up to date online Doxygen documentation can be found at [Doxygen.BitShares.org](https://doxygen.bitshares.org/hierarchy.html).
 
@@ -281,7 +281,7 @@ necessary to use the node:
     }
 
 Passwords are stored in `base64` as salted `sha256` hashes.  A simple Python script,
-[`saltpass.py`](https://github.com/bitshares-cnvote/bitshares-core/blob/master/programs/witness_node/saltpass.py)
+[`saltpass.py`](https://github.com/bitshares/bitshares-core/blob/master/programs/witness_node/saltpass.py)
 is avaliable to obtain hash and salt values from a password.
 A single asterisk `"*"` may be specified as username or password hash to accept any value.
 
