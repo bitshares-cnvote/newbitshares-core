@@ -1,11 +1,6 @@
-BitShares Core
+NewBitShares Core
 ==============
 
-[Build Status](https://travis-ci.org/bitshares-cnvote/bitshares-core/branches):
-
-`master` | `develop` | `hardfork` | `testnet` | `bitshares-fc` 
- --- | --- | --- | --- | ---
- [![](https://travis-ci.org/bitshares-cnvote/bitshares-core.svg?branch=master)](https://travis-ci.org/bitshares-cnvote/bitshares-core) | [![](https://travis-ci.org/bitshares-cnvote/bitshares-core.svg?branch=develop)](https://travis-ci.org/bitshares-cnvote/bitshares-core) | [![](https://travis-ci.org/bitshares/bitshares-core.svg?branch=hardfork)](https://travis-ci.org/bitshares/bitshares-core) | [![](https://travis-ci.org/bitshares-cnvote/bitshares-core.svg?branch=testnet)](https://travis-ci.org/bitshares-cnvote/bitshares-core) | [![](https://travis-ci.org/bitshares-cnvote/bitshares-fc.svg?branch=master)](https://travis-ci.org/bitshares-cnvote/bitshares-fc) 
 
 
 * [Getting Started](#getting-started)
@@ -15,10 +10,10 @@ BitShares Core
 * [FAQ](#faq)
 * [License](#license)
 
-BitShares Core is the BitShares blockchain implementation and command-line interface.
-The web browser based wallet is [BitShares UI](https://github.com/bitshares/bitshares-ui).
+New BitShares Core is the BitShares blockchain implementation and command-line interface.
+The web browser based wallet is [BitShares UI](https://github.com/bitshares-cnvote/newbitshares-ui).
 
-Visit [BitShares.org](https://bitshares.org/) to learn about BitShares and join the community at [BitSharesTalk.org](https://bitsharestalk.org/).
+Visit [nbs.plus](https://nbs.plus/) to learn about NewBitShares and join the community .
 
 Information for developers can be found in the [BitShares Developer Portal](https://dev.bitshares.works/). Users interested in how BitShares works can go to the [BitShares Documentation](https://how.bitshares.works/) site.
 
@@ -26,7 +21,7 @@ Information for developers can be found in the [BitShares Developer Portal](http
 Getting Started
 ---------------
 Build instructions and additional documentation are available in the
-[Wiki](https://github.com/bitshares-cnvote/bitshares-core/wiki).
+[Wiki](https://github.com/bitshares-cnvote/newbitshares-core/wiki).
 
 ### Build
 
@@ -40,7 +35,7 @@ We recommend building on Ubuntu 18.04 LTS (64-bit)
 **Build Script:**
 
     git clone https://github.com/bitshares-cnvote/newbitshares-core.git
-    cd bitshares-core
+    cd newbitshares-core
     git checkout master # may substitute "master" with current release tag
     git submodule update --init --recursive
     mkdir build
@@ -60,20 +55,20 @@ We recommend building on Ubuntu 18.04 LTS (64-bit)
 
 **NOTE:**
 
-* BitShares requires a 64-bit operating system to build, and will not build on a 32-bit OS. Tested operating systems:
+* NewBitShares requires a 64-bit operating system to build, and will not build on a 32-bit OS. Tested operating systems:
   * Linux (heavily tested with Ubuntu 18.04 LTS and Ubuntu 16.04 LTS)
   * macOS (various versions)
   * Windows (various versions, Visual Studio and MinGW)
   * OpenBSD (various versions)
 
-* BitShares requires [Boost](http://www.boost.org/) libraries to build, supports version `1.58` to `1.69`.
+* NewBitShares requires [Boost](http://www.boost.org/) libraries to build, supports version `1.58` to `1.69`.
 Newer versions may work, but have not been tested.
 If your system came pre-installed with a version of Boost libraries that you do not wish to use, you may
-manually build your preferred version and use it with BitShares by specifying it on the CMake command line.
+manually build your preferred version and use it with NewBitShares by specifying it on the CMake command line.
 
   Example: `cmake -DBOOST_ROOT=/path/to/boost ..`
 
-* BitShares requires [OpenSSL](https://www.openssl.org/) libraries to build, supports version `1.0.2` to `1.1.1`.
+* NewBitShares requires [OpenSSL](https://www.openssl.org/) libraries to build, supports version `1.0.2` to `1.1.1`.
 If your system came pre-installed with a version of OpenSSL libraries that you do not wish to use, you may
 manually build your preferred version and use it with BitShares by specifying it on the CMake command line.
 
@@ -187,9 +182,9 @@ Support
 
 Technical support is available in the [BitSharesTalk technical support subforum](https://bitsharestalk.org/index.php?board=45.0).
 
-BitShares Core bugs can be reported directly to the [issue tracker](https://github.com/bitshares-cnovte/newbitshares-core/issues).
+NewBitShares Core bugs can be reported directly to the [issue tracker](https://github.com/bitshares-cnovte/newbitshares-core/issues).
 
-BitShares UI bugs should be reported to the [UI issue tracker](https://github.com/bitshares/bitshares-ui/issues).
+NewBitShares UI bugs should be reported to the [UI issue tracker](https://github.com/bitshares-cnvote/newbitshares-ui/issues).
 
 Up to date online Doxygen documentation can be found at [Doxygen.BitShares.org](https://doxygen.bitshares.org/hierarchy.html).
 
@@ -373,5 +368,5 @@ FAQ
  
 License
 -------
-BitShares Core is under the MIT license. See [LICENSE](https://github.com/bitshares-cnvote/bitshares-core/blob/master/LICENSE.txt)
+NewBitShares Core is under the MIT license. See [LICENSE](https://github.com/bitshares-cnvote/newbitshares-core/blob/master/LICENSE.txt)
 for more information.
