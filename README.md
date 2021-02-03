@@ -19,7 +19,7 @@ Information for developers can be found in the [BitShares Developer Portal](http
 
 
 Getting Started
----------------
+----------------
 Build instructions and additional documentation are available in the
 [Wiki](https://github.com/bitshares-cnvote/newbitshares-core/wiki).
 
