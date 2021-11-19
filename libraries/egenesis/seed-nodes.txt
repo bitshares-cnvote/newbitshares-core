@@ -1,4 +1,3 @@
-"45.32.27.41:20000",
-"47.105.178.64:20000", 
-"47.252.24.193:20000",
-"nbsseeds.ioex.top:20000",           // Community
+"testseednode1.cnvote.vip:19998",
+"testseednode2.cnvote.vip:19999",
+"testseednode3.cnvote.vip:19999",
