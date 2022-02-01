@@ -1276,16 +1276,25 @@ bool database::check_call_orders( const asset_object& mia, bool enable_black_swa
        } else { // fill call
           call_receives  = usd_to_buy;
 
-          if( before_core_hardfork_342 )
-          {
-             limit_receives = usd_to_buy * match_price; // round down, in favor of call order
-             call_pays = limit_receives;
-          } else {
-             limit_receives = usd_to_buy.multiply_and_round_up( match_price ); // round up, in favor of limit order
-             call_pays      = usd_to_buy.multiply_and_round_up( call_pays_price ); // BSIP74; excess is fee.
-                                              // Note: TODO: Due to different rounding, couldn't this potentialy be
-                                              // one satoshi more than the blackswan check above? Can this bite us?
-          }
+               if( before_core_hardfork_342 )
+               {
+                  limit_receives = usd_to_buy * match_price; // round down, in favor of call order
+                  call_pays = limit_receives;
+               } else {
+                  call_pays      = usd_to_buy.multiply_and_round_up( call_pays_price ); // BSIP74; excess is fee.
+                  // Note: Due to different rounding, this could potentialy be
+                  //       one satoshi more than the blackswan check above
+                  if( call_pays.amount > call_order.collateral )
+                  {
+                        call_pays.amount = call_order.collateral;
+                  }
+                  // Note: if it is a partial fill due to TCR, the math guarantees that the new CR will be higher
+                  //       than the old CR, so no additional check for potential blackswan here
+
+                  limit_receives = usd_to_buy.multiply_and_round_up( match_price ); // round up, favors limit order
+                  if( limit_receives.amount > call_order.collateral )
+                     limit_receives.amount = call_order.collateral;
+               }
 
           filled_call    = true; // this is safe, since BSIP38 (hard fork core-834) depends on BSIP31 (hard fork core-343)
 
