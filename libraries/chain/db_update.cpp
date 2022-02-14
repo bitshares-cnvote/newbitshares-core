@@ -436,6 +436,14 @@ void database::clear_expired_orders()
                                                                            mia_object.get_id())));
             // There should always be a call order, since asset exists!
             assert(itr != call_index.end() && itr->debt_type() == mia_object.get_id());
+
+            if (itr == call_index.end() || itr->debt_type() != mia_object.get_id())
+            {
+               wlog( "No debt position found when processing force settlement ${o}",("o",order) );
+               cancel_settle_order( order );
+               break;
+            }
+            
             asset max_settlement = max_settlement_volume - settled;
 
             if( order.balance.amount == 0 )
