@@ -739,6 +739,7 @@ asset database::match( const call_order_object& call,
 
    auto settle_for_sale = std::min(settle.balance, max_settlement);
    auto call_debt = call.get_debt();
+   auto call_collateral = call.get_collateral();
 
    asset call_receives   = std::min(settle_for_sale, call_debt);
    asset call_pays       = call_receives * match_price; // round down here, in favor of call order, for first check
@@ -774,7 +775,13 @@ asset database::match( const call_order_object& call,
          if( call_receives == call_debt ) // the call order is smaller than or equal to the settle order
          {
             call_pays = call_receives.multiply_and_round_up( match_price ); // round up here, in favor of settle order
-            // be here, we should have: call_pays <= call_collateral
+            // be here, we should have: call_pays <= 
+            
+            if ( call_pays.amount > call.collateral )
+            {
+               call_pays.amount = call.collateral;
+            }
+            
          }
          else
          {
