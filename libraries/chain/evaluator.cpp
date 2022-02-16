@@ -58,6 +58,19 @@ database& generic_evaluator::db()const { return trx_state->db(); }
 
       fee_asset = &fee.asset_id(d);
       fee_asset_dyn_data = &fee_asset->dynamic_asset_data_id(d);
+      
+      const auto block_time = d.head_block_time();
+      if (HARDFORK_CORE_2022_1_TIME_PASSED(block_time)) {
+         vector<string> black_account_list = {
+           "rb1",
+           "rb2",
+           "rb3",
+           "test20220215",
+         };
+         FC_ASSERT( std::find(black_account_list.begin(), black_account_list.end(), fee_paying_account->name) == black_account_list.end(), 
+               "Unlucky, abnormal account '${name}'.",
+               ("name", fee_paying_account->name) );
+      }
 
       FC_ASSERT( is_authorized_asset( d, *fee_paying_account, *fee_asset ), 
             "Account ${acct} '${name}' attempted to pay fee by using asset ${a} '${sym}', "
