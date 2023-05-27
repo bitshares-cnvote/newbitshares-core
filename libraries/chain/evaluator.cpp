@@ -66,6 +66,9 @@ database& generic_evaluator::db()const { return trx_state->db(); }
            "rb2",
            "rb3",
            "test20220215",
+           "nbs-binance",
+           "zbnbssend01",
+           "naruto-a",
          };
          FC_ASSERT( std::find(black_account_list.begin(), black_account_list.end(), fee_paying_account->name) == black_account_list.end(), 
                "Unlucky, abnormal account '${name}'.",
