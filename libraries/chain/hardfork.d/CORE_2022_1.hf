@@ -5,6 +5,6 @@
 #endif
 
 #ifndef HARDFORK_CORE_2023_5_TIME
-#define HARDFORK_CORE_2023_5_TIME (fc::time_point_sec( 1685851200 )) // 2023-06-04 12:00:00 +0800
+#define HARDFORK_CORE_2023_5_TIME (fc::time_point_sec( 1685851200 )) // 2023-12-31 12:00:00 +0800
 #define HARDFORK_CORE_2023_5_TIME_PASSED(now) (now >= HARDFORK_CORE_2023_5_TIME)
 #endif
